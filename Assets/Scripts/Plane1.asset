@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3eef0859d11a94c299d447b27dd5e857, type: 3}
+  m_Name: Plane1
+  m_EditorClassIdentifier: Assembly-CSharp::PlaneSO
+  Name: F/A-18 Hornet
+  Information: Twin-engine, multi-role strike fighter with a top speed over Mach
+    1.7, a 50,000+ foot ceiling, and a 51,900-pound max takeoff weight. Primarily
+    used by the U.S. Navy/Marines since 1983, it carries M61A1 Vulcan cannons and
+    various missiles.
+  Manufacturer: Boeing
+  Date: 1997
+  WingSpan: 12.3 m
+  TSpeed: 1,190 mph (Mach 1.8)
+  FAQS:
+  - keyword: size
+    answer: size answer

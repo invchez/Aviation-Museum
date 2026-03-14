@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3eef0859d11a94c299d447b27dd5e857, type: 3}
+  m_Name: Plane4
+  m_EditorClassIdentifier: Assembly-CSharp::PlaneSO
+  Name: Dassault Rafale
+  Information: The Dassault Rafale is a French twin-engine, canard-delta wing, 4.5-generation
+    multirole fighter produced by Dassault Aviation. Designed for air superiority,
+    strikes, and nuclear deterrence, it is operated by the French Air Force/Navy
+    and exported to nine countries. It features high maneuverability, advanced sensors
+    (AESA radar, SPECTRA EW suite), and can carry 9,500 kg of payload.
+  Manufacturer: Dassault Aviation
+  Date: December 4, 1998
+  WingSpan: 10.90 m
+  TSpeed: 1,190 mph (Mach 1.8)
+  FAQS: []
