@@ -12,6 +12,7 @@ public class AiTextReciever : MonoBehaviour
 {
 
     public TextMeshProUGUI AiResponse;
+    public TMP_InputField responseField;
     public AudioSource TextToSpeech;
     public AudioClip AudioClip;
     public string questioncompare;
@@ -48,6 +49,7 @@ public class AiTextReciever : MonoBehaviour
 
         Debug.Log(NewInput);
         AiResponse.text = NewInput;
+        responseField.text = NewInput;
 
         StartCoroutine(UserQuestionChecker(NewInput));
         // StartCoroutine(AskChatGPT(NewInput));
@@ -74,6 +76,7 @@ public class AiTextReciever : MonoBehaviour
             if (req.result == UnityWebRequest.Result.Success){
                 Choices response = JsonUtility.FromJson<Choices>(req.downloadHandler.text);
                 AiResponse.text = response.choices[0].message.content;
+                responseField.text = response.choices[0].message.content;
                 StartCoroutine(GetAudioFile(AiResponse.text));
                 
             } 
@@ -117,6 +120,7 @@ public class AiTextReciever : MonoBehaviour
         for (int i = 0; i < plane.FAQS.Count; i++) {
             if (loweredinput.Contains(plane.FAQS[i].keyword)) {
                 AiResponse.text = plane.FAQS[i].answer;
+                responseField.text = plane.FAQS[i].answer;
                 yield break;
             }
         }
@@ -137,6 +141,7 @@ public class AiTextReciever : MonoBehaviour
                 }
                 else {
                     AiResponse.text = "Please stay on topic.";
+                    responseField.text = "Please stay on topic.";
                 }
 
                 // File.WriteAllText(path, req.downloadHandler.text);
