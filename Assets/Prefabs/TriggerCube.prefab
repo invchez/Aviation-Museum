@@ -3704,6 +3704,7 @@ MonoBehaviour:
   StatisticsPanel: {fileID: 9016251196297267745}
   InformationPanel: {fileID: 3662448537481132889}
   Plane: {fileID: 11400000, guid: ac8068327f39146fe8cf758cf4af9d4c, type: 2}
+  TitleText: {fileID: 7786949178937226797}
   StatisticsText: {fileID: 3662027765116389256}
   Canvas: {fileID: 5803808553253050117}
 --- !u!114 &2462781862479620307

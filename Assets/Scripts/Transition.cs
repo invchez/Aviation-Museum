@@ -21,6 +21,16 @@ public class Transition : MonoBehaviour
     {
         
     }
+
+    public void FadeOut()
+    {
+        GetComponent<Animator>().Play("MainMenuFadeOut");
+    }
+
+    public void FadeIn()
+    {
+        GetComponent<Animator>().Play("MainMenuFadeIn");
+    }
     
     public void FadeIn(string SelectedSceneSwitch)
     {

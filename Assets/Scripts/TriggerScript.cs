@@ -9,19 +9,24 @@ public class TriggerScript : MonoBehaviour
     public GameObject StatisticsPanel;
     public GameObject InformationPanel;
     public PlaneSO Plane;
+    public TextMeshProUGUI TitleText;
     public TextMeshProUGUI StatisticsText;
     public Canvas Canvas;
     private AudioSource TextToSpeech;
-    
-
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     void Start()
     {
+        RefreshPanel();
+    }
+
+    public void RefreshPanel()
+    {
         InformationPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = Plane.Name;
         InformationPanel.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = Plane.Information;
         StatisticsText.text = $"WingSpan: {Plane.WingSpan}\n Top Speed: {Plane.TSpeed}";
+        TitleText.text = $"{Plane.Name}";
 
         Canvas.worldCamera = Camera.main;
         GetComponentInChildren<AiTextReciever>(true).plane = Plane;
@@ -34,12 +39,6 @@ public class TriggerScript : MonoBehaviour
         InformationPanel.GetComponent<AnimationEnd>().AnimationEndedEvent += () => InformationPanel.SetActive(false);
 
         StarterMain.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = Plane.Name;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     private void OnTriggerEnter(Collider other)
