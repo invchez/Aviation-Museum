@@ -40,7 +40,7 @@ public class Transition : MonoBehaviour
 
     public void Changescene()
     {
-        SceneManager.LoadScene(SceneName);
+        // SceneManager.LoadScene(SceneName);
 
     }
 
