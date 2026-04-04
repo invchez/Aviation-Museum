@@ -1,21 +1,28 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SettingsScript : MonoBehaviour
 {
     
     public GameObject Settings;
     private PlayerScript playerScript;
+    public Button button;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         playerScript = GetComponent<PlayerScript>();
+        button.onClick.AddListener(OnToggleMenu);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if(Input.GetKeyDown(KeyCode.L))
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
     }
 
     void OnToggleMenu()

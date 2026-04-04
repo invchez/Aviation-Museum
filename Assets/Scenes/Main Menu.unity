@@ -214,6 +214,7 @@ MonoBehaviour:
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -350,6 +351,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -486,6 +488,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -755,6 +758,7 @@ MonoBehaviour:
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -801,17 +805,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 142168612882573575, guid: 24c896e53cb8640aa8ce34b5ac8d7cc0, type: 3}
   m_PrefabInstance: {fileID: 8204074411513264643}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &381049973 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6842865386886263096, guid: 24c896e53cb8640aa8ce34b5ac8d7cc0, type: 3}
-  m_PrefabInstance: {fileID: 8204074411513264643}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6e6a8417f19b247ab991f2b2047f4e4f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Transition
 --- !u!1 &387585130
 GameObject:
   m_ObjectHideFlags: 0
@@ -1168,6 +1161,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1292,14 +1286,14 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 381049973}
-        m_TargetAssemblyTypeName: Transition, Assembly-CSharp
-        m_MethodName: FadeIn
-        m_Mode: 5
+      - m_Target: {fileID: 8204074411513264646}
+        m_TargetAssemblyTypeName: SceneSwitcher, Assembly-CSharp
+        m_MethodName: SwitchScene
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: Museum
           m_BoolArgument: 0
@@ -1437,6 +1431,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1720,6 +1715,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -2394,13 +2390,41 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3179780406175471620, guid: 24c896e53cb8640aa8ce34b5ac8d7cc0, type: 3}
       propertyPath: m_Name
-      value: Image
+      value: FadeOut
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6842865386886263096, guid: 24c896e53cb8640aa8ce34b5ac8d7cc0, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3179780406175471620, guid: 24c896e53cb8640aa8ce34b5ac8d7cc0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8204074411513264646}
   m_SourcePrefab: {fileID: 100100000, guid: 24c896e53cb8640aa8ce34b5ac8d7cc0, type: 3}
+--- !u!1 &8204074411513264644 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3179780406175471620, guid: 24c896e53cb8640aa8ce34b5ac8d7cc0, type: 3}
+  m_PrefabInstance: {fileID: 8204074411513264643}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &8204074411513264645 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 8295367100610472458, guid: 24c896e53cb8640aa8ce34b5ac8d7cc0, type: 3}
+  m_PrefabInstance: {fileID: 8204074411513264643}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8204074411513264646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8204074411513264644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3c3ef80b251b4c35bc10636d7dff6dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SceneSwitcher
+  turnOffAtStart: 0
+  panel: {fileID: 8204074411513264645}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
