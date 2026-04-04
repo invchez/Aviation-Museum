@@ -13,6 +13,8 @@ public class SettingsScript : MonoBehaviour
     {
         playerScript = GetComponent<PlayerScript>();
         button.onClick.AddListener(OnToggleMenu);
+
+        button.gameObject.SetActive(playerScript.IsUsingMobileControls());
     }
 
     // Update is called once per frame

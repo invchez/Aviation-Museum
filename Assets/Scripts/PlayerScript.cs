@@ -92,7 +92,7 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
-    bool IsMobileModeEnabled()
+    public bool IsMobileModeEnabled()
     {
         return Application.isMobilePlatform || forceMobileModeForDebug;
     }
