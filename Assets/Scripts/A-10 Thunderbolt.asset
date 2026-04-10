@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3eef0859d11a94c299d447b27dd5e857, type: 3}
+  m_Name: A-10 Thunderbolt
+  m_EditorClassIdentifier: Assembly-CSharp::PlaneSO
+  Name: A-10 Warthog
+  Information: The A-10 Thunderbolt II is a close air support aircraft designed to
+    destroy ground targets like tanks and armored vehicles. It is heavily armored
+    and famous for its powerful GAU-8 Avenger rotary cannon. Its durability and ability
+    to fly low and slow make it highly effective in battlefield support roles.
+  Manufacturer: Fairchild Republic
+  Date: 1972
+  WingSpan: 57 ft 6 in
+  TSpeed: 439 mph (Mach 0.56)
+  FAQS: []

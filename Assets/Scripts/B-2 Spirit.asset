@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3eef0859d11a94c299d447b27dd5e857, type: 3}
+  m_Name: B-2 Spirit
+  m_EditorClassIdentifier: Assembly-CSharp::PlaneSO
+  Name: B-2 Spirit
+  Information: The Northrop Grumman B-2 Spirit is an American heavy strategic bomber
+    featuring low-observable stealth technology designed to penetrate dense anti-aircraft
+    defenses. Capable of delivering both conventional and nuclear weapons, it has
+    a 172-foot wingspan, a 6,000+ nautical mile unrefueled range, and a crew of two.
+    Only 21 were built, with an approximate unit cost of over $2 billion.
+  Manufacturer: Northrop Grumman
+  Date: 1988
+  WingSpan: 172 Feet
+  TSpeed: 628 mph (0.85 Mach)
+  FAQS: []

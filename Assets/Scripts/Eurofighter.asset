@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3eef0859d11a94c299d447b27dd5e857, type: 3}
+  m_Name: Eurofighter
+  m_EditorClassIdentifier: Assembly-CSharp::PlaneSO
+  Name: Eurofighter Typhoon
+  Information: The Eurofighter Typhoon is a highly agile, twin-engine, canard-delta
+    wing, multirole fighter developed by a European consortium (Airbus, BAE Systems,
+    Leonardo). Renowned for its "swing-role" capability, it excels in both air-to-air
+    and precision strike missions. The jet is powered by two EJ200 engines providing
+    a high thrust-to-weight ratio, reaching speeds of Mach 2.0+.
+  Manufacturer: Airbus/BAE Systems/Leonardo
+  Date: March 27, 1994
+  WingSpan: 10.95 m
+  TSpeed: 1,550 mph (Mach 2.0)
+  FAQS: []
