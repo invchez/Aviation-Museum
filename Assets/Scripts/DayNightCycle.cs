@@ -16,6 +16,8 @@ public class DayNightOffsetLight
 [ExecuteAlways]
 public class DayNightCycle : MonoBehaviour
 {
+    const string PrefDayNightEnabled = "settings.environment.dayNightEnabled";
+
     static readonly int SkyboxExposure = Shader.PropertyToID("_Exposure");
     static readonly int SkyboxAtmosphereThickness = Shader.PropertyToID("_AtmosphereThickness");
 
@@ -84,6 +86,11 @@ public class DayNightCycle : MonoBehaviour
             proceduralSkybox = RenderSettings.skybox;
         }
 
+        if (Application.isPlaying)
+        {
+            LoadSavedDayNightSetting();
+        }
+
         EnsureCurves();
         BindDayNightToggle();
         CacheOffsetLightBaseIntensities();
@@ -130,6 +137,7 @@ public class DayNightCycle : MonoBehaviour
     {
         if (dayNightToggle == null)
         {
+            OnDayNightToggleChanged(autoCycle);
             return;
         }
 
@@ -160,7 +168,30 @@ public class DayNightCycle : MonoBehaviour
             timeOfDay = 12f;
         }
 
+        if (Application.isPlaying)
+        {
+            PlayerPrefs.SetInt(PrefDayNightEnabled, autoCycle ? 1 : 0);
+            PlayerPrefs.Save();
+        }
+
         ApplyTimeOfDay();
+    }
+
+    void LoadSavedDayNightSetting()
+    {
+        bool defaultEnabled = autoCycle;
+        bool savedEnabled = PlayerPrefs.GetInt(PrefDayNightEnabled, defaultEnabled ? 1 : 0) == 1;
+
+        autoCycle = savedEnabled;
+        if (dayNightToggle != null)
+        {
+            dayNightToggle.SetIsOnWithoutNotify(savedEnabled);
+        }
+
+        if (!autoCycle)
+        {
+            timeOfDay = 12f;
+        }
     }
 
     void ApplyTimeOfDay()

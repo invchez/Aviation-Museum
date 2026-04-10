@@ -13,13 +13,23 @@ public class TriggerScript : MonoBehaviour
     public TextMeshProUGUI TitleText;
     public TextMeshProUGUI StatisticsText;
     public Canvas Canvas;
+    public AiTextReciever aiTextReciever;
     private AudioSource TextToSpeech;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     void Start()
     {
+        EnsureAiTextReceiverReference();
         RefreshPanel();
+    }
+
+    void EnsureAiTextReceiverReference()
+    {
+        if (aiTextReciever == null)
+        {
+            aiTextReciever = GetComponentInChildren<AiTextReciever>(true);
+        }
     }
 
     // Centralized visibility cleanup so disabling a trigger always closes every panel immediately.
@@ -47,6 +57,14 @@ public class TriggerScript : MonoBehaviour
 
     public void RefreshPanel()
     {
+        EnsureAiTextReceiverReference();
+
+        // Keep AI context synchronized with whichever PlaneSO is active after layout/plot switching.
+        if (aiTextReciever != null)
+        {
+            aiTextReciever.SetPlaneContext(Plane);
+        }
+
         // When no plane is assigned we treat this trigger as inactive and clear visible text.
         if (Plane == null)
         {
@@ -79,7 +97,6 @@ public class TriggerScript : MonoBehaviour
         TitleText.text = $"{Plane.Name}";
 
         Canvas.worldCamera = Camera.main;
-        GetComponentInChildren<AiTextReciever>(true).plane = Plane;
 
         TextToSpeech = GameObject.FindWithTag("AudioSource").GetComponent<AudioSource>();
 

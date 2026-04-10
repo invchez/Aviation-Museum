@@ -33,6 +33,9 @@ public class PlaneSwitcher : MonoBehaviour
     public List<string> layoutButtonLabels = new();
     public Button buttonPrefab;
 
+    [Title("UI")]
+    public Toggle panelTriggerMeshToggle;
+
     public Transition transition;
     public float transitionDuration = 1f;
 
@@ -41,6 +44,8 @@ public class PlaneSwitcher : MonoBehaviour
 
     void Start()
     {
+        BindPanelTriggerMeshToggle();
+
         for (int i = 0; i < layoutButtonLabels.Count; i++)
         {
             int layoutIndex = i; // Create a local copy of the loop variable
@@ -55,6 +60,49 @@ public class PlaneSwitcher : MonoBehaviour
         SwitchLayout(currentLayout, doFade: false);
 
         buttonPrefab.gameObject.SetActive(false);
+    }
+
+    void OnDestroy()
+    {
+        if (panelTriggerMeshToggle == null)
+        {
+            return;
+        }
+
+        panelTriggerMeshToggle.onValueChanged.RemoveListener(SetPanelTriggerMeshRenderersVisible);
+    }
+
+    void BindPanelTriggerMeshToggle()
+    {
+        if (panelTriggerMeshToggle == null)
+        {
+            return;
+        }
+
+        panelTriggerMeshToggle.onValueChanged.RemoveListener(SetPanelTriggerMeshRenderersVisible);
+        panelTriggerMeshToggle.onValueChanged.AddListener(SetPanelTriggerMeshRenderersVisible);
+
+        SetPanelTriggerMeshRenderersVisible(panelTriggerMeshToggle.isOn);
+    }
+
+    public void SetPanelTriggerMeshRenderersVisible(bool isVisible)
+    {
+        for (int i = 0; i < planePlot.Count; i++)
+        {
+            TriggerScript trigger = planePlot[i].panelTrigger;
+            if (trigger == null)
+            {
+                continue;
+            }
+
+            MeshRenderer meshRenderer = trigger.GetComponent<MeshRenderer>();
+            if (meshRenderer == null)
+            {
+                continue;
+            }
+
+            meshRenderer.enabled = isVisible;
+        }
     }
 
     [Button("Switch To Layout")]
@@ -111,6 +159,11 @@ public class PlaneSwitcher : MonoBehaviour
                 plot.panelTrigger.Plane = hasRequestedLayout ? plot.planeData[layout].planeData : null;
                 plot.panelTrigger.RefreshPanel();
             }
+        }
+
+        if (panelTriggerMeshToggle != null)
+        {
+            SetPanelTriggerMeshRenderersVisible(panelTriggerMeshToggle.isOn);
         }
 
         if (doFade)
