@@ -16,7 +16,8 @@ Shader "Custom/VerticalFacesFence"
         {
             "RenderPipeline" = "UniversalPipeline"
             "RenderType" = "Transparent"
-            "Queue" = "Transparent"
+            // Render before default transparent/UI shaders to avoid drawing over world-space canvases.
+            "Queue" = "Transparent-100"
         }
 
         Pass

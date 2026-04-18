@@ -69,6 +69,10 @@ public class PlayerScript : MonoBehaviour
         {
             UpdateMobileInput();
         }
+        else
+        {
+            UpdateDesktopInput();
+        }
 
         if (CanMove == true)
         {
@@ -137,6 +141,45 @@ public class PlayerScript : MonoBehaviour
         LookDirection = GetMobileLookInput();
     }
 
+    void UpdateDesktopInput()
+    {
+        Vector2 desktopMove = Vector2.zero;
+
+        if (Keyboard.current != null)
+        {
+            if (Keyboard.current.wKey.isPressed || Keyboard.current.upArrowKey.isPressed)
+            {
+                desktopMove.y += 1f;
+            }
+
+            if (Keyboard.current.sKey.isPressed || Keyboard.current.downArrowKey.isPressed)
+            {
+                desktopMove.y -= 1f;
+            }
+
+            if (Keyboard.current.dKey.isPressed || Keyboard.current.rightArrowKey.isPressed)
+            {
+                desktopMove.x += 1f;
+            }
+
+            if (Keyboard.current.aKey.isPressed || Keyboard.current.leftArrowKey.isPressed)
+            {
+                desktopMove.x -= 1f;
+            }
+        }
+
+        MoveDirection = Vector2.ClampMagnitude(desktopMove, 1f);
+
+        if (Mouse.current != null)
+        {
+            LookDirection = Mouse.current.delta.ReadValue();
+        }
+        else
+        {
+            LookDirection = Vector2.zero;
+        }
+    }
+
     Vector2 GetMobileLookInput()
     {
         if (Touchscreen.current == null)
@@ -192,27 +235,6 @@ public class PlayerScript : MonoBehaviour
     public bool IsUsingMobileControls()
     {
         return useMobileControls;
-    }
-
-    void OnMove(InputValue Action)
-    {
-        if (useMobileControls)
-        {
-            return;
-        }
-
-        MoveDirection = Action.Get<Vector2>();
-
-    }
-
-    void OnLook(InputValue Action)
-    {
-        if (useMobileControls)
-        {
-            return;
-        }
-
-        LookDirection = Action.Get<Vector2>();
     }
 
     public void SetPlayerSpeed(float PlayerSpeedChange)
