@@ -21,7 +21,17 @@ public class SettingsScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Keyboard.current != null && Keyboard.current.lKey.wasPressedThisFrame)
+        if (Keyboard.current == null)
+        {
+            return;
+        }
+
+        if (Keyboard.current.escapeKey.wasPressedThisFrame && Settings != null)
+        {
+            OnToggleMenu();
+        }
+
+        if (Keyboard.current.lKey.wasPressedThisFrame)
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
