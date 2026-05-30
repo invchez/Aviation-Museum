@@ -1,16 +1,9 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
-using TMPro;
-using UnityEngine.UI;
 
 public class PlayerScript : MonoBehaviour
 {
-    const string PrefPlayerSpeed = "settings.player.speed";
-    const string PrefCameraSensitivity = "settings.player.sensitivity";
-    const string PrefCameraFov = "settings.player.fov";
-    const string PrefRenderDistance = "settings.player.renderDistance";
-
     Vector2 MoveDirection;
     Vector2 LookDirection;
     public float CameraSense;
@@ -21,15 +14,6 @@ public class PlayerScript : MonoBehaviour
     float cameraPitch;
     LayerMask layerMask;
     private bool CanMove = true;
-    public TextMeshProUGUI CurrentSpeedDisplay;
-    public TextMeshProUGUI CurrentSenseDisplay;
-    public TextMeshProUGUI CurrentFovDisplay;
-    public TextMeshProUGUI CurrentRenderDisplay;
-
-    public Slider speedSlider;
-    public Slider senseSlider;
-    public Slider fovSlider;
-    public Slider renderSlider;
     
     public FixedJoystick movementJoystick;
     [Header("Mobile Controls")]
@@ -52,8 +36,6 @@ public class PlayerScript : MonoBehaviour
         }
         ApplyControlMode(IsMobileModeEnabled());
         layerMask = LayerMask.GetMask("UI");
-
-        LoadSavedSettings();
     }
 
     // Update is called once per frame
@@ -237,127 +219,40 @@ public class PlayerScript : MonoBehaviour
         return useMobileControls;
     }
 
-    public void SetPlayerSpeed(float PlayerSpeedChange)
-    {
-        SetPlayerSpeed(PlayerSpeedChange, true);
-    }
-
-    void SetPlayerSpeed(float PlayerSpeedChange, bool savePreference)
+    public void ApplyPlayerSpeed(float PlayerSpeedChange)
     {
         PlayerSpeed = PlayerSpeedChange;
-        if (CurrentSpeedDisplay != null)
-        {
-            CurrentSpeedDisplay.text = PlayerSpeed.ToString();
-        }
-
-        if (speedSlider != null)
-        {
-            speedSlider.SetValueWithoutNotify(PlayerSpeed);
-        }
-
-        if (savePreference)
-        {
-            PlayerPrefs.SetFloat(PrefPlayerSpeed, PlayerSpeed);
-            PlayerPrefs.Save();
-        }
-
     }
 
-    public void SetPlayerSense(float PlayerSenseChange)
-    {
-        SetPlayerSense(PlayerSenseChange, true);
-    }
-
-    void SetPlayerSense(float PlayerSenseChange, bool savePreference)
+    public void ApplyCameraSensitivity(float PlayerSenseChange)
     {
         CameraSense = PlayerSenseChange;
-        if (CurrentSenseDisplay != null)
-        {
-            CurrentSenseDisplay.text = CameraSense.ToString("F1");
-        }
-
-        if (senseSlider != null)
-        {
-            senseSlider.SetValueWithoutNotify(CameraSense);
-        }
-
-        if (savePreference)
-        {
-            PlayerPrefs.SetFloat(PrefCameraSensitivity, CameraSense);
-            PlayerPrefs.Save();
-        }
     }
 
-    public void SetFovValue(float PlayerFovChange)
-    {
-        SetFovValue(PlayerFovChange, true);
-    }
-
-    void SetFovValue(float PlayerFovChange, bool savePreference)
+    public void ApplyCameraFov(float PlayerFovChange)
     {
         if (Camera != null)
         {
             Camera.fieldOfView = PlayerFovChange;
         }
-
-        if (CurrentFovDisplay != null && Camera != null)
-        {
-            CurrentFovDisplay.text = ((int)Camera.fieldOfView).ToString();
-        }
-
-        if (fovSlider != null)
-        {
-            fovSlider.SetValueWithoutNotify(PlayerFovChange);
-        }
-
-        if (savePreference)
-        {
-            PlayerPrefs.SetFloat(PrefCameraFov, PlayerFovChange);
-            PlayerPrefs.Save();
-        }
     }
 
-    public void SetRenderValue(float PlayerRenderChange)
-    {
-        SetRenderValue(PlayerRenderChange, true);
-    }
-
-    void SetRenderValue(float PlayerRenderChange, bool savePreference)
+    public void ApplyRenderDistance(float PlayerRenderChange)
     {
         if (Camera != null)
         {
             Camera.farClipPlane = PlayerRenderChange;
         }
-
-        if (CurrentRenderDisplay != null && Camera != null)
-        {
-            CurrentRenderDisplay.text = Camera.farClipPlane.ToString();
-        }
-
-        if (renderSlider != null)
-        {
-            renderSlider.SetValueWithoutNotify(PlayerRenderChange);
-        }
-
-        if (savePreference)
-        {
-            PlayerPrefs.SetFloat(PrefRenderDistance, PlayerRenderChange);
-            PlayerPrefs.Save();
-        }
     }
 
-    void LoadSavedSettings()
+    public float GetCameraFov()
     {
-        float savedSpeed = PlayerPrefs.GetFloat(PrefPlayerSpeed, PlayerSpeed);
-        float savedSensitivity = PlayerPrefs.GetFloat(PrefCameraSensitivity, CameraSense);
-        float savedFov = PlayerPrefs.GetFloat(PrefCameraFov, Camera != null ? Camera.fieldOfView : 60f);
-        float savedRenderDistance = PlayerPrefs.GetFloat(PrefRenderDistance, Camera != null ? Camera.farClipPlane : 1000f);
+        return Camera != null ? Camera.fieldOfView : 60f;
+    }
 
-        // Load once at startup without re-saving immediately.
-        SetPlayerSpeed(savedSpeed, false);
-        SetPlayerSense(savedSensitivity, false);
-        SetFovValue(savedFov, false);
-        SetRenderValue(savedRenderDistance, false);
+    public float GetRenderDistance()
+    {
+        return Camera != null ? Camera.farClipPlane : 1000f;
     }
 
 
