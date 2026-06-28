@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using TMPro;
 using EditorAttributes;
 
 public class SettingsScript : MonoBehaviour
@@ -10,6 +11,7 @@ public class SettingsScript : MonoBehaviour
     const string PrefCameraSensitivity = "settings.player.sensitivity";
     const string PrefCameraFov = "settings.player.fov";
     const string PrefRenderDistance = "settings.player.renderDistance";
+    const string PrefGameQuality = "settings.player.quality";
 
     public GameObject Settings;
     public Button button;
@@ -35,6 +37,7 @@ public class SettingsScript : MonoBehaviour
     public SettingsElement renderDistanceSetting;
     public float renderDistanceMin = 100f;
     public float renderDistanceMax = 5000f;
+    public TMP_Dropdown qualityDropdown;
 
     PlayerScript playerScript;
 
@@ -84,6 +87,7 @@ public class SettingsScript : MonoBehaviour
         BindSetting(cameraSensitivitySetting, cameraSensitivityMin, cameraSensitivityMax, SetPlayerSense);
         BindSetting(cameraFovSetting, cameraFovMin, cameraFovMax, SetFovValue);
         BindSetting(renderDistanceSetting, renderDistanceMin, renderDistanceMax, SetRenderValue);
+        BindQualityDropdown();
 
         LoadSavedSettings();
     }
@@ -100,6 +104,18 @@ public class SettingsScript : MonoBehaviour
         setting.slider.minValue = clampedMin;
         setting.slider.maxValue = clampedMax;
         setting.slider.onValueChanged.AddListener(callback);
+    }
+
+    void BindQualityDropdown()
+    {
+        if (qualityDropdown == null)
+        {
+            return;
+        }
+
+        qualityDropdown.ClearOptions();
+        qualityDropdown.AddOptions(new System.Collections.Generic.List<string>(QualitySettings.names));
+        qualityDropdown.onValueChanged.AddListener(SetGameQuality);
     }
 
     void OnToggleMenu()
@@ -226,6 +242,35 @@ public class SettingsScript : MonoBehaviour
         SavePreference(PrefRenderDistance, clampedRenderDistance, savePreference);
     }
 
+    public void SetGameQuality(int qualityIndex)
+    {
+        SetGameQuality(qualityIndex, true);
+    }
+
+    void SetGameQuality(int qualityIndex, bool savePreference)
+    {
+        int levelCount = QualitySettings.names.Length;
+        if (levelCount == 0)
+        {
+            return;
+        }
+
+        int clampedIndex = Mathf.Clamp(qualityIndex, 0, levelCount - 1);
+        QualitySettings.SetQualityLevel(clampedIndex, true);
+
+        if (qualityDropdown != null)
+        {
+            qualityDropdown.SetValueWithoutNotify(clampedIndex);
+            qualityDropdown.RefreshShownValue();
+        }
+
+        if (savePreference)
+        {
+            PlayerPrefs.SetInt(PrefGameQuality, clampedIndex);
+            PlayerPrefs.Save();
+        }
+    }
+
     void UpdateSettingDisplay(SettingsElement setting, float value, string displayValue)
     {
         if (setting == null)
@@ -273,6 +318,9 @@ public class SettingsScript : MonoBehaviour
         SetPlayerSense(savedSensitivity, false);
         SetFovValue(savedFov, false);
         SetRenderValue(savedRenderDistance, false);
+
+        int savedQuality = PlayerPrefs.GetInt(PrefGameQuality, QualitySettings.GetQualityLevel());
+        SetGameQuality(savedQuality, false);
     }
 
     float ClampToRange(float value, float minValue, float maxValue)
