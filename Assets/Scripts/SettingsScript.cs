@@ -14,7 +14,10 @@ public class SettingsScript : MonoBehaviour
     const string PrefGameQuality = "settings.player.quality";
 
     public GameObject Settings;
+    // Close button inside the Settings panel.
     public Button button;
+    // HUD button that opens Settings on touch devices, which have no Escape key.
+    public Button openButton;
 
     [Title("Player")]
     public SettingsElement playerSpeedSetting;
@@ -49,7 +52,12 @@ public class SettingsScript : MonoBehaviour
         if (button != null)
         {
             button.onClick.AddListener(OnToggleMenu);
-            button.gameObject.SetActive(playerScript != null && playerScript.IsUsingMobileControls());
+        }
+
+        if (openButton != null)
+        {
+            openButton.onClick.AddListener(OnToggleMenu);
+            openButton.gameObject.SetActive(playerScript != null && playerScript.IsMobileModeEnabled());
         }
 
         InitializeSettings();
@@ -118,7 +126,7 @@ public class SettingsScript : MonoBehaviour
         qualityDropdown.onValueChanged.AddListener(SetGameQuality);
     }
 
-    void OnToggleMenu()
+    public void OnToggleMenu()
     {
         if (Settings == null)
         {
@@ -353,10 +361,5 @@ public class SettingsScript : MonoBehaviour
         float clampedMax = Mathf.Max(playerVolumeMin, playerVolumeMax);
         float normalizedVolume = Mathf.InverseLerp(clampedMin, clampedMax, settingValue);
         playerVolumeAudioSource.volume = Mathf.Clamp01(normalizedVolume);
-    }
-
-    public void OpenDonationPage()
-    {
-        Application.OpenURL("");
     }
 }

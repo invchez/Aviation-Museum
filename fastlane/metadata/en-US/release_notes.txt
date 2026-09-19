@@ -1,0 +1,6 @@
+Welcome to the first release of AVIA Museum!
+
+• Explore nine legendary aircraft in a walkable 3D exhibit hall
+• Ask the AI museum guide about any aircraft and hear spoken answers
+• Read exhibit plaques with full specifications and history
+• Switch between two exhibit layouts

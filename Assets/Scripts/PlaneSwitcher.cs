@@ -35,6 +35,10 @@ public class PlaneSwitcher : MonoBehaviour
 
     [Title("UI")]
     public Toggle panelTriggerMeshToggle;
+    // HUD button that cycles layouts. The in-world switcher panel is behind the spawn
+    // point, so without this a visitor may never find the second layout.
+    public Button hudLayoutButton;
+    public TMP_Text hudLayoutLabel;
 
     public Transition transition;
     public float transitionDuration = 1f;
@@ -57,9 +61,33 @@ public class PlaneSwitcher : MonoBehaviour
             newButton.GetComponentInChildren<TMP_Text>().text = layoutButtonLabels[i];
         }
 
+        if (hudLayoutButton != null)
+        {
+            hudLayoutButton.onClick.AddListener(NextLayout);
+        }
+
         SwitchLayout(currentLayout, doFade: false);
 
         buttonPrefab.gameObject.SetActive(false);
+    }
+
+    public void NextLayout()
+    {
+        int layoutCount = Mathf.Max(1, layoutButtonLabels.Count);
+        SwitchLayout((currentLayout + 1) % layoutCount);
+    }
+
+    void UpdateHudLayoutLabel()
+    {
+        if (hudLayoutLabel == null)
+        {
+            return;
+        }
+
+        string layoutName = currentLayout >= 0 && currentLayout < layoutButtonLabels.Count
+            ? layoutButtonLabels[currentLayout]
+            : $"Layout {currentLayout + 1}";
+        hudLayoutLabel.text = $"Layout: {layoutName}";
     }
 
     void OnDestroy()
@@ -114,6 +142,10 @@ public class PlaneSwitcher : MonoBehaviour
     public void SwitchLayout(int layout, bool doFade = true)
     {
         if (switchRoutine != null) StopCoroutine(switchRoutine);
+
+        // Previously never updated, so anything reading currentLayout saw the start value.
+        currentLayout = layout;
+        UpdateHudLayoutLabel();
 
         switchRoutine = StartCoroutine(SwitchLayoutWithTransition(layout, doFade));
     }

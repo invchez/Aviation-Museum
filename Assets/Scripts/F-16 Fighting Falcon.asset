@@ -17,11 +17,9 @@ MonoBehaviour:
     multirole fighter aircraft, commonly nicknamed the "Viper," produced by Lockheed
     Martin. It is used by the U.S. Air Force and over 25 other nations for air-to-air
     combat, ground attack, and suppression of enemy air defenses, reaching speeds
-    over Mach 2 with a 50,000+ foot ceiling.  NAVAIR (.mil) '
+    over Mach 2 with a 50,000+ foot ceiling.'
   Manufacturer: Lockheed Martin
-  Date: August 17, 1978
+  Date: 1974
   WingSpan: 9.45 m
-  TSpeed: 1,500 mph  (Mac 2.0)
-  FAQS:
-  - keyword: size
-    answer: return size
+  TSpeed: 1,500 mph (Mach 2.0)
+  FAQS: []

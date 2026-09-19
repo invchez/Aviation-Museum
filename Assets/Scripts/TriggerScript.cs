@@ -16,6 +16,9 @@ public class TriggerScript : MonoBehaviour
     public AiTextReciever aiTextReciever;
     private AudioSource TextToSpeech;
 
+    // Raised when the visitor walks into any exhibit, so first-time hints can retire.
+    public static event System.Action ExhibitEntered;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     void Start()
@@ -93,7 +96,11 @@ public class TriggerScript : MonoBehaviour
 
         InformationPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = Plane.Name;
         InformationPanel.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = Plane.Information;
-        StatisticsText.text = $"WingSpan: {Plane.WingSpan}\n Top Speed: {Plane.TSpeed}";
+        StatisticsText.text =
+            $"Manufacturer: {Plane.Manufacturer}\n" +
+            $"First flight: {Plane.Date}\n" +
+            $"Wingspan: {Plane.WingSpan}\n" +
+            $"Top speed: {Plane.TSpeed}";
         TitleText.text = $"{Plane.Name}";
 
         Canvas.worldCamera = Camera.main;
@@ -118,8 +125,27 @@ public class TriggerScript : MonoBehaviour
 
         if (other.CompareTag("Player")) {
             AnimatePanels("StarterMain");
+            ExhibitEntered?.Invoke();
+            TurnVisitorTowardsPanel(other);
         }
             
+    }
+
+    // Exhibit panels face the walkway, but visitors usually step onto a marker while
+    // walking down the hall, which leaves the panel off to one side. Turn them to it.
+    void TurnVisitorTowardsPanel(Collider visitor)
+    {
+        PlayerScript player = visitor.GetComponentInParent<PlayerScript>();
+        if (player == null || Canvas == null)
+        {
+            return;
+        }
+
+        Vector3 panelCentre = Canvas.transform.position;
+        if (!player.IsLookingAt(panelCentre, 25f))
+        {
+            player.FaceTowards(panelCentre, stopMoving: true);
+        }
     }
 
     private void OnTriggerExit(Collider other)

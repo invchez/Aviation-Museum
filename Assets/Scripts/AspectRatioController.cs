@@ -17,6 +17,13 @@ public class AspectRatioController : MonoBehaviour {
 
     void Start()
     {
+        // Phones/tablets must render at native resolution; forcing 16:9 distorts the image.
+        if (Application.isMobilePlatform)
+        {
+            enabled = false;
+            return;
+        }
+
         StartCoroutine(MaintainAspectRatio());
     }
 }

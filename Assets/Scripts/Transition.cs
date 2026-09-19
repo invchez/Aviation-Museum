@@ -2,11 +2,10 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+// Fullscreen fade overlay. Scene loading is owned by SceneSwitcher, which starts the
+// fade and then loads the scene itself; this component only drives the animation.
 public class Transition : MonoBehaviour
 {
-    string SceneName = "";
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
         if (SceneManager.GetActiveScene().name != "Main Menu")
@@ -14,12 +13,6 @@ public class Transition : MonoBehaviour
             GetComponent<Image>().color = Color.black;
             GetComponent<Animator>().Play("MainMenuFadeOut");
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void FadeOut()
@@ -31,18 +24,4 @@ public class Transition : MonoBehaviour
     {
         GetComponent<Animator>().Play("MainMenuFadeIn");
     }
-    
-    public void FadeIn(string SelectedSceneSwitch)
-    {
-        SceneName = SelectedSceneSwitch;
-        GetComponent<Animator>().Play("MainMenuFadeIn");
-    }
-
-    public void Changescene()
-    {
-        // SceneManager.LoadScene(SceneName);
-
-    }
-
-
 }

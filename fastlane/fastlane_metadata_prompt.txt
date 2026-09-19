@@ -1,0 +1,166 @@
+# Task: Generate Fastlane metadata to publish an iOS app to the App Store
+
+I have an iOS app (Flutter) that I want to publish via Fastlane (deliver).
+I will archive the build in Xcode and upload the binary myself, so the app
+entry already exists (or will exist) in App Store Connect. I need YOU to
+scaffold all the Fastlane metadata and config so I can run `fastlane deliver`
+to push metadata and App Store info. Do NOT upload the binary.
+
+## Credentials / values (already known — use these)
+- Apple Team ID:               63R7WU94A2
+- App Store Connect Issuer ID: 69a6de89-9f6e-47e3-e053-5b8c7c11a4d1
+- Key ID:                      ZW7RMV5D95
+- AuthKey (.p8) file:          AuthKey_ZW7RMV5D95.p8
+- Support URL:                 https://codingmind.com/
+- Pricing:                     Free (price tier 0)
+- Availability:                All countries / regions
+
+## App Review information (use these for the review_information section)
+- Contact first name:          Jonathan
+- Contact last name:           Sahagun
+- Contact email:               jonathansahagun93@gmail.com
+- Contact phone:               +1 323 775 7247
+- Demo account (ONLY if the app requires login to use):
+    - username/email:          a@example.com
+    - password:                abc123
+  If the app has any login/auth gate, provide these demo credentials to App
+  Review (review_information demo_user / demo_password) AND make sure this
+  account actually works/exists in the backend so a reviewer can sign in. If the
+  app does NOT require login, mark the demo account as not required and skip it.
+
+## App name, description, and version (DERIVE FROM THE CODE — do not hardcode)
+- App name: read `assets/appname.txt` (or a similarly named file in the assets
+  folder) and use the FIRST line as the app name. If no such file exists, STOP
+  and ASK ME to supply the app name — do not guess and do not fall back to the
+  bundle id or display name.
+- Description: derive from the app's actual functionality by reading the code,
+  NOT from a metadata file. Write a real App Store description based on what the
+  app does.
+- Version: auto-generate / read from the build (pubspec.yaml version or the
+  Xcode build settings). Do not hardcode a version string in metadata; let
+  Fastlane pick it up from the build.
+- App category: determine the primary (and optionally secondary) App Store
+  category by reading the code to understand what the app does, and set it in
+  the metadata. Do not ask me — infer it from the app's functionality.
+
+## Values I still need to confirm (ASK ME before generating)
+- App bundle identifier: the Xcode project currently has the default
+  `com.example.brightassist` — this MUST be changed to a real reverse-domain id
+  (e.g. com.codingmind.brightassist) before it can ship. Ask me which to use.
+- SKU (or generate a sensible one, e.g. brightassist-ios)
+- Primary language (default en-US)
+- Promotional text, keywords, subtitle, release notes
+(Privacy Policy URL: I set this myself in App Store Connect — do not ask.)
+
+## What I need you to create
+1. `fastlane/Appfile` with:
+   - apple_team_id "63R7WU94A2"
+   - app_identifier (the confirmed bundle id)
+
+2. `fastlane/Fastfile` with a lane `upload_metadata` that calls
+   `upload_to_app_store` / `deliver` configured to:
+   - authenticate with the App Store Connect API key
+     (key_id: ZW7RMV5D95, issuer_id: 69a6de89-9f6e-47e3-e053-5b8c7c11a4d1,
+      key_filepath pointing to AuthKey_ZW7RMV5D95.p8)
+   - skip_binary_upload: true   (I upload the build myself)
+   - upload the screenshots captured in step 5 (do NOT skip screenshots)
+   - reference the metadata directory
+   - set pricing to FREE (price tier 0)
+   - set availability to ALL countries / territories
+   Note: price and territory availability are not part of the metadata/ text
+   files — configure them via deliver's pricing/availability options (e.g. a
+   price_tier of 0 and an availability list of all territories), or document
+   the one manual step in App Store Connect if the API can't set them.
+
+3. The full `fastlane/metadata/` directory tree that `deliver` expects, with
+   placeholder text files I can fill in:
+   - en-US/name.txt              -> derive from the app's code (see above)
+   - en-US/subtitle.txt
+   - en-US/description.txt       -> write from the app's actual functionality (read the code)
+   - en-US/keywords.txt
+   - en-US/release_notes.txt
+   - en-US/promotional_text.txt
+   - support_url.txt             -> https://codingmind.com/
+   (Do NOT create a marketing_url.txt — skip the Marketing URL entirely.)
+   (Do NOT create privacy_url.txt — I set the Privacy Policy URL myself in ASC.)
+   - copyright.txt              -> "Coding Mind Inc" followed by the current year
+                                   (e.g. "Coding Mind Inc 2026"); use the actual
+                                   current year, do not hardcode a stale year.
+   - app category placeholders
+
+4. Verify the iOS app icon is set. The app's logo should live in the assets
+   folder (e.g. assets/logo.png). Confirm the iOS app icon set
+   (ios/Runner/Assets.xcassets/AppIcon.appiconset/) is populated and matches the
+   logo — in particular that the required 1024x1024 marketing icon is present
+   (App Store submission requires it). If the icon set is missing, empty, or
+   does not match assets/logo.png, tell me and explain how to regenerate it
+   (e.g. via flutter_launcher_icons from assets/logo.png).
+
+5. Check the EULA. The assets folder usually contains an `eula.txt`
+   (e.g. assets/eula.txt). Read it: if it is empty or contains placeholder
+   content (e.g. "lorem ipsum", "TODO", "[App Name]", boilerplate placeholders),
+   fill it out as a proper End-User License Agreement using the app name
+   determined above. If it already contains a real, complete EULA, leave it
+   unchanged.
+
+6. Capture App Store screenshots on the iOS Simulator.
+   - Run the app on the Simulator and take screenshots of the main/key screens.
+   - Capture on BOTH an iPhone simulator and an iPad simulator (Apple requires
+     both an iPhone and an iPad screenshot set). Use current-generation devices
+     with App Store-accepted screenshot sizes (e.g. a 6.7"/6.9" iPhone and a
+     12.9"/13" iPad Pro).
+   - If the app needs data to look presentable, it's OK to temporarily edit the
+     source code to inject mock/sample data so the screens are populated. You
+     MUST revert all such edits after the screenshots are taken — leave the
+     working tree exactly as it was (verify with `git status` / `git diff`).
+   - Save the screenshots into a top-level `screenshots/` folder, organized by
+     device (e.g. screenshots/iphone/, screenshots/ipad/). Wire these into
+     deliver so they get uploaded (set the screenshots path, or use the standard
+     fastlane/screenshots layout) — confirm which layout you used.
+   - Prefer automating this with `fastlane snapshot` (UI test based) if feasible;
+     otherwise capture manually via `xcrun simctl io <udid> screenshot`. Either
+     way the source-code mock-data edits must be undone afterward.
+
+7. A short README explaining:
+   - where to place AuthKey_ZW7RMV5D95.p8 (and that it must stay out of git)
+   - the exact `fastlane upload_metadata` command to run
+   - which fields Apple requires before submission (privacy URL, category,
+     screenshots, age rating, etc.)
+   - reminder that I archive + upload the binary myself via Xcode/Transporter
+
+## App Store Connect submission requirements (cover all of these)
+Before the app can be submitted for review, these must be set. Configure what
+deliver/the API can set; for anything that must be done by hand in App Store
+Connect, list it clearly in the README as a manual step.
+
+Things fastlane CAN handle (do these):
+- App Review contact info (name / email / phone above) — set via review_information.
+- Demo account credentials (above) IF the app has any login gate; otherwise mark
+  "sign-in not required."
+- Export compliance (encryption) — set ITSAppUsesNonExemptEncryption in
+  Info.plist (usually NO for standard HTTPS) so review isn't blocked.
+- Content rights — declare whether the app contains third-party content.
+
+Things fastlane CANNOT set — produce a filled-in worksheet for me to paste into
+App Store Connect manually (do NOT claim deliver will set these):
+- App Privacy / data-collection labels ("privacy nutrition label"). deliver does
+  NOT support these. Inspect the code (Firebase, analytics, auth, location,
+  device identifiers, crash reporting, etc.) to determine exactly what data is
+  collected, then write out the recommended data-type answers (collected? linked
+  to identity? used for tracking? purpose?) as a worksheet I can enter manually.
+- Age rating / content questionnaire. deliver does NOT support this. Read the
+  app's content and recommend answers to each age-rating question, as a worksheet
+  I enter manually in App Store Connect.
+
+I will handle myself (do NOT generate or set):
+- Privacy Policy URL — I will enter this in App Store Connect.
+
+(Category, pricing/availability, iPhone & iPad screenshots, the 1024x1024 icon,
+and version/release notes are already covered in the steps above — do not
+duplicate them here.)
+
+## Important constraints
+- Use the App Store Connect API key (.p8 + key_id + issuer_id), NOT 2FA Apple ID.
+- Do NOT commit the .p8 or any secrets; add them to .gitignore.
+- Assume the binary upload is done by me separately (skip_binary_upload: true).
+- Confirm the bundle id and the still-needed values with me before generating.
