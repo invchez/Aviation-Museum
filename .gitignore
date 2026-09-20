@@ -97,3 +97,15 @@ InitTestScene*.unity*
 
 # Auto-generated scenes by play mode tests
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
+
+# Fastlane secrets and local artifacts — never commit App Store Connect keys
+fastlane/*.p8
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/test_output/
+fastlane/README.txt
+fastlane/.DS_Store
+fastlane/Issuer ID.txt
+fastlane/Key ID.txt
+fastlane/apple team id.txt
+fastlane/README.md

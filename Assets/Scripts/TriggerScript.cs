@@ -126,6 +126,7 @@ public class TriggerScript : MonoBehaviour
         if (other.CompareTag("Player")) {
             AnimatePanels("StarterMain");
             ExhibitEntered?.Invoke();
+            if (Plane != null) ExhibitProgress.MarkVisited(Plane.Name);
             TurnVisitorTowardsPanel(other);
         }
             

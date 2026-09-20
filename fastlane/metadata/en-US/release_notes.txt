@@ -1,6 +1,6 @@
-Welcome to the first release of AVIA Museum!
+Two new ways to explore the collection:
 
-• Explore nine legendary aircraft in a walkable 3D exhibit hall
-• Ask the AI museum guide about any aircraft and hear spoken answers
-• Read exhibit plaques with full specifications and history
-• Switch between two exhibit layouts
+• Cockpit & Cutaway hangar — open any aircraft with a section plane to see the engines, fuel, radar, seat, cannon and weapons bays inside, each numbered and explained, or sit in the pilot's seat and look around with a head-up display.
+• Exhibit Badges — a five-question quiz for every aircraft, drawn from its plaque and its systems. Earn all nine badges to become a Hangar Master.
+
+Also in this update: wingspans on every plaque now read in both feet and metres.

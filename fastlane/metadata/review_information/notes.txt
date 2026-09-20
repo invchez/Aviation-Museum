@@ -1,6 +1,17 @@
 No sign-in or account is required to use any part of the app. The app is played in landscape; please hold the device in landscape.
 
-HOW TO FIND EACH FEATURE
+WHAT IS NEW IN THIS BUILD
+This build adds two features that are unique to this app and are reachable from the main menu without entering the museum:
+
+1. "Cockpit & Cutaway" on the main menu opens a hangar where every aircraft can be taken apart:
+   - EXTERIOR: drag to turn the aircraft, pinch to zoom. A card at the bottom left lists its crew, length, engines and gun.
+   - CUTAWAY: tap "Cutaway" at the bottom. A section plane removes the half of the airframe nearest the camera and reveals the systems inside — engines, fuel tanks, radar, ejection seat, cannon and weapons bays — each marked with a number on the model and listed in the "Inside the aircraft" panel on the left. Tap any number, or any row in that panel, for an explanation. The "Section depth" slider moves the cut. The removed half stays visible as a blue X-ray outline.
+   - COCKPIT: tap "Cockpit" at the bottom to sit at the pilot's eye point and drag to look around the instrument panel, with a head-up display showing heading and pitch. Two of the nine models (B-2 Spirit and F/A-18 Hornet) have no modelled cockpit interior; for those the Cockpit button is disabled and the reason is shown on screen.
+   - Use the arrows either side of the aircraft name at the top to move between the nine aircraft.
+
+2. "Quiz & Badges" on the main menu opens the badge collection: one badge per aircraft. Tap any badge to take that aircraft's five-question quiz, generated from its exhibit plaque and its internal systems, with the other aircraft's answers as the wrong choices. Four correct out of five earns the badge; earning all nine makes you a Hangar Master. A badge also shows whether you have visited that aircraft's exhibit in the museum. Progress is stored on the device only.
+
+HOW TO FIND EACH FEATURE IN THE MUSEUM
 Tap Enter on the main menu to load the museum (loading takes a few seconds). On first entry, a tutorial card explains the controls.
 
 1. Built-in tutorial for first-time visitors: appears automatically the first time you enter the museum and stays on screen until you tap "Got it". Tap the "?" button at the top right to show it again at any time.
@@ -12,12 +23,3 @@ Tap Enter on the main menu to load the museum (loading takes a few seconds). On 
 4. Two switchable exhibit layouts: tap the "Layout" button at the top left. It switches between "Multirole Fighters" and "Stealth & Strike", and the aircraft on display change.
 
 5. Day-night cycle: the light in the hall changes through the day, most visibly through the windows along the right-hand wall; one full day lasts three minutes. Tap "Settings" at the top right to turn the Day / Night Cycle on or off.
-
-CHANGES IN THIS BUILD (1.0, build 4)
-In the previous review these features could not be located. On a touch device they were only reachable by walking into unmarked areas, the tutorial described keyboard and mouse controls, and the Settings screen could not be opened on iPad or iPhone. This build makes every feature reachable and signposted:
-- A touch tutorial replaces the keyboard-and-mouse one on iPhone and iPad, stays until dismissed, and can be reopened with "?".
-- A Settings button now appears at the top right on iPhone and iPad (previously Settings could only be opened with a keyboard's Escape key).
-- A Layout button at the top left switches exhibit layouts from anywhere in the museum.
-- Glowing floor markers show where to stand for every exhibit, and an on-screen hint explains them until the first exhibit is opened. Stepping onto a marker turns the view to face the exhibit panel.
-- The Statistics panel now also shows each aircraft's manufacturer and first flight, as the App Store description states.
-- The day-night cycle now runs over three minutes instead of thirty seconds, so it reads as a gradual change of light rather than flicker.

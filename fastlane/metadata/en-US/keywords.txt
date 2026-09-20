@@ -1,1 +1,1 @@
-aviation,museum,aircraft,jet,fighter,military,3d,virtual tour,plane,ai guide,flight,education
+aviation,museum,aircraft,jet,fighter,cutaway,cockpit,3d,quiz,plane,ai guide,education

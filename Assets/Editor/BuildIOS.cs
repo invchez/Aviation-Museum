@@ -13,6 +13,7 @@ public static class BuildIOS
     {
         "Assets/Scenes/Main Menu.unity",
         "Assets/Scenes/Museum.unity",
+        "Assets/Scenes/Aircraft Viewer.unity",
     };
 
     public static void BuildSimulator()

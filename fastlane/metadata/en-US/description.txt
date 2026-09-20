@@ -1,8 +1,15 @@
-Step inside a virtual aviation museum and walk among legendary military aircraft — no ticket required.
+Step inside a virtual aviation museum and walk among legendary military aircraft — then open them up and see what is inside.
 
 AVIA Museum is a fully explorable 3D museum. Wander the exhibit hall in first person, get up close to nine iconic jets, and learn the story behind each aircraft from its exhibit plaque: manufacturer, first flight, wingspan, top speed, and a concise history.
 
-Have a question the plaque doesn't answer? Ask the built-in AI museum guide. Walk up to any aircraft, type your question, and get an instant answer about that specific plane — read aloud with natural text-to-speech, just like a real museum tour guide.
+CUTAWAY AND COCKPIT VIEWS
+Every aircraft can be opened up in the Cockpit & Cutaway hangar. A section plane slices away the near half of the airframe to reveal the engines, fuel tanks, radar, ejection seat, cannon and weapons bays inside, each one numbered and explained — the F-22's thrust-vectoring F119s, the A-10's seven-barrel cannon and its titanium armour, the B-2's four buried engines and rotary weapons bays. Or take the pilot's seat and look around a real modelled cockpit through a head-up display.
+
+EXHIBIT BADGES
+Every aircraft has its own five-question quiz drawn from its exhibit plaque and its systems. Score four or more and you earn that aircraft's badge; collect all nine to become a Hangar Master.
+
+AI MUSEUM GUIDE
+Have a question the plaque doesn't answer? Walk up to any aircraft, type your question, and get an instant answer about that specific plane — read aloud with natural text-to-speech, just like a real museum tour guide.
 
 FEATURED AIRCRAFT
 • A-10 Thunderbolt II
@@ -17,6 +24,9 @@ FEATURED AIRCRAFT
 
 FEATURES
 • Free-roam, first-person exploration with a touch joystick and drag-to-look camera
+• Interactive cutaway view of every aircraft, with a section slider and labelled internal systems
+• Cockpit view from the pilot's seat, with a head-up display showing heading and pitch
+• Collectible exhibit badges earned through per-aircraft quizzes
 • AI museum guide for every aircraft, with spoken answers
 • Detailed exhibit plaques with specifications and history
 • Two switchable exhibit layouts to change up the collection on display

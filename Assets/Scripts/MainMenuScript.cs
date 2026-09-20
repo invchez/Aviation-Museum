@@ -10,6 +10,10 @@ public class MainMenuScript : MonoBehaviour
 
     void Start()
     {
+        // Unity's error overlay draws red log text across the screen on a device. A visitor
+        // (or an App Review tester) should never see it, whatever goes wrong at runtime.
+        Debug.developerConsoleEnabled = false;
+
         if (!Application.isMobilePlatform)
         {
             return;
