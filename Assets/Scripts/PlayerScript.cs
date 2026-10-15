@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
@@ -22,6 +23,10 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] private float swipeLookSensitivity = 0.08f;
     private bool useMobileControls;
     private int activeLookTouchId = -1;
+    private Coroutine faceRoutine;
+    private bool isAutoFacing;
+    // Set when a turn should also stop the player; cleared once movement input is released.
+    private bool waitForMoveRelease;
     
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -56,15 +61,32 @@ public class PlayerScript : MonoBehaviour
             UpdateDesktopInput();
         }
 
+        if (waitForMoveRelease)
+        {
+            if (MoveDirection.sqrMagnitude < 0.01f)
+            {
+                waitForMoveRelease = false;
+            }
+            else
+            {
+                MoveDirection = Vector2.zero;
+            }
+        }
+
         if (CanMove == true)
         {
             Vector3 CombinedTransform = transform.forward * MoveDirection.y + transform.right * MoveDirection.x;
 
             rb.linearVelocity = CombinedTransform * PlayerSpeed;
-            transform.Rotate(0, LookDirection.x * CameraSense, 0 , Space.Self);
-            cameraPitch -= LookDirection.y * CameraSense;
-            cameraPitch = Mathf.Clamp(cameraPitch, angleClamp.x, angleClamp.y);
-            Camera.transform.localRotation = Quaternion.Euler(cameraPitch, 0f, 0f);
+
+            // FaceTowards drives the view while it runs; applying look input too would fight it.
+            if (!isAutoFacing)
+            {
+                transform.Rotate(0, LookDirection.x * CameraSense, 0 , Space.Self);
+                cameraPitch -= LookDirection.y * CameraSense;
+                cameraPitch = Mathf.Clamp(cameraPitch, angleClamp.x, angleClamp.y);
+                Camera.transform.localRotation = Quaternion.Euler(cameraPitch, 0f, 0f);
+            }
         }
         
     }
@@ -207,6 +229,69 @@ public class PlayerScript : MonoBehaviour
         }
 
         return lookDelta;
+    }
+
+    public bool IsLookingAt(Vector3 worldPoint, float toleranceDegrees)
+    {
+        return Vector3.Angle(Camera.transform.forward, worldPoint - Camera.transform.position) <= toleranceDegrees;
+    }
+
+    // Smoothly turns the view toward a world point. A positive verticalOffsetDegrees tilts
+    // the view further down, which raises the point on screen (used to lift a panel above
+    // the on-screen keyboard). With stopMoving, a held joystick no longer walks the player
+    // until it is released; otherwise, after the turn, "forward" would carry them straight
+    // through the panel they were just turned to face.
+    public void FaceTowards(Vector3 worldPoint, float verticalOffsetDegrees = 0f, float duration = 0.6f,
+                            bool stopMoving = false)
+    {
+        if (stopMoving)
+        {
+            waitForMoveRelease = true;
+        }
+
+        if (faceRoutine != null)
+        {
+            StopCoroutine(faceRoutine);
+        }
+
+        faceRoutine = StartCoroutine(FaceTowardsRoutine(worldPoint, verticalOffsetDegrees, duration));
+    }
+
+    IEnumerator FaceTowardsRoutine(Vector3 target, float verticalOffsetDegrees, float duration)
+    {
+        Vector3 flat = target - transform.position;
+        flat.y = 0f;
+        if (flat.sqrMagnitude < 0.0001f)
+        {
+            faceRoutine = null;
+            yield break;
+        }
+
+        Quaternion startYaw = transform.rotation;
+        Quaternion endYaw = Quaternion.LookRotation(flat.normalized, Vector3.up);
+
+        // Positive pitch looks down, so a target above the camera needs a negative pitch.
+        Vector3 fromCamera = target - Camera.transform.position;
+        float horizontal = new Vector2(fromCamera.x, fromCamera.z).magnitude;
+        float endPitch = -Mathf.Atan2(fromCamera.y, horizontal) * Mathf.Rad2Deg + verticalOffsetDegrees;
+        endPitch = Mathf.Clamp(endPitch, angleClamp.x, angleClamp.y);
+        float startPitch = cameraPitch;
+
+        isAutoFacing = true;
+        for (float elapsed = 0f; elapsed < duration; elapsed += Time.deltaTime)
+        {
+            float blend = Mathf.SmoothStep(0f, 1f, elapsed / duration);
+            transform.rotation = Quaternion.Slerp(startYaw, endYaw, blend);
+            cameraPitch = Mathf.Lerp(startPitch, endPitch, blend);
+            Camera.transform.localRotation = Quaternion.Euler(cameraPitch, 0f, 0f);
+            yield return null;
+        }
+
+        transform.rotation = endYaw;
+        cameraPitch = endPitch;
+        Camera.transform.localRotation = Quaternion.Euler(cameraPitch, 0f, 0f);
+        isAutoFacing = false;
+        faceRoutine = null;
     }
 
     public void SetCanMove(bool Move)

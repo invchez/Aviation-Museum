@@ -1,0 +1,20 @@
+Hello,
+
+Thank you for the review. You were right that these features were too hard to find on iPad: they were only reachable by walking into unmarked areas of the museum, the tutorial described keyboard and mouse controls, and the Settings screen could not be opened on a touch device. We have submitted build 1.0 (4), which makes every feature visible and reachable by touch. Please hold the device in landscape.
+
+After tapping Enter on the main menu:
+
+1. Built-in tutorial: a tutorial card appears automatically on first entry and stays until you tap "Got it". The "?" button at the top right shows it again at any time.
+
+2. Exhibit plaques with specifications and history: glowing cyan rings on the floor mark each exhibit. Walk onto one with the joystick (bottom left) and the aircraft's exhibit panel opens, with the view turning to face it. "Information" shows the plaque and history; "Statistics" shows the manufacturer, first flight, wingspan and top speed.
+
+3. AI museum guide with spoken answers: on the exhibit panel, tap "AI Docent", tap the text field, type a question (for example "What was it designed for?") and press Return. The answer is shown and read aloud. This requires an internet connection.
+
+4. Two switchable exhibit layouts: the "Layout" button at the top left switches between "Multirole Fighters" and "Stealth & Strike".
+
+5. Day-night cycle: the light in the hall changes over a three-minute day, most visibly through the windows on the right-hand wall. It can be turned on or off from "Settings" at the top right.
+
+The same steps are included in the App Review notes for this build.
+
+Thank you,
+Jonathan Sahagun

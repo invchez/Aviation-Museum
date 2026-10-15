@@ -11,6 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Museum.unity
     guid: 89ae8c438ddd14dca8940eb522e5cbc2
+  - enabled: 1
+    path: Assets/Scenes/Aircraft Viewer.unity
+    guid: 10893e099e5014715a88b5ec777b0ccf
   - enabled: 0
     path: Assets/Scenes/Museum2.unity
     guid: 238f78ad03c5141558dbe9c95a91ecbe

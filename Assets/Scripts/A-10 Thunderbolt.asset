@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3eef0859d11a94c299d447b27dd5e857, type: 3}
   m_Name: A-10 Thunderbolt
   m_EditorClassIdentifier: Assembly-CSharp::PlaneSO
-  Name: A-10 Warthog
+  Name: A-10 Thunderbolt II
   Information: The A-10 Thunderbolt II is a close air support aircraft designed to
     destroy ground targets like tanks and armored vehicles. It is heavily armored
     and famous for its powerful GAU-8 Avenger rotary cannon. Its durability and ability
     to fly low and slow make it highly effective in battlefield support roles.
   Manufacturer: Fairchild Republic
   Date: 1972
-  WingSpan: 57 ft 6 in
+  WingSpan: 57 ft 6 in (17.53 m)
   TSpeed: 439 mph (Mach 0.56)
   FAQS: []

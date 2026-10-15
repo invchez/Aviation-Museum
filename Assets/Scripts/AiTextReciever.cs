@@ -12,6 +12,12 @@ using UnityEngine.UI;
 public class AiTextReciever : MonoBehaviour
 {
     const string GreetingMessage = "Hi, what can I help you with?";
+    const string ThinkingMessage = "Looking that up...";
+    const string OfflineMessage = "I can't reach the museum guide right now. Check your internet connection and ask again.";
+    const string ServiceErrorMessage = "The museum guide is unavailable at the moment. Please try again in a few seconds.";
+
+    // Requests are bounded so a stalled connection surfaces an error instead of hanging silently.
+    const int RequestTimeoutSeconds = 20;
 
     public TextMeshProUGUI AiResponse;
     public TMP_InputField responseField;
@@ -21,9 +27,17 @@ public class AiTextReciever : MonoBehaviour
     public PlaneSO plane;
     
     private string workerUrl = "https://spring-poetry-3bc5.alexli010972.workers.dev/";
+
+    // Shared by both worker endpoints. Any value shipped in a client binary is extractable,
+    // so the worker must treat this as a throttling key, not as real authentication.
+    const string AppSecretHeader = "x-app-secret";
+    const string AppSecret = "test_secret";
+
     int contextVersion;
     Coroutine scrollRoutine;
     Coroutine audioRoutine;
+    // Tracks the placeholder line shown while a request is in flight so it can be replaced in place.
+    bool thinkingLineVisible;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -69,6 +83,8 @@ public class AiTextReciever : MonoBehaviour
             StopAllCoroutines();
             scrollRoutine = null;
             audioRoutine = null;
+
+            thinkingLineVisible = false;
 
             // Clear history on active plot/layout changes so each context starts fresh.
             if (responseField != null)
@@ -145,6 +161,38 @@ public class AiTextReciever : MonoBehaviour
         }
 
         scrollRoutine = null;
+    }
+
+    // Shown as soon as a question is sent so the visitor always gets immediate feedback,
+    // then swapped for the answer (or an error) when the request resolves.
+    void ShowThinkingLine()
+    {
+        AppendConversationLine("AI", ThinkingMessage);
+        thinkingLineVisible = true;
+
+        if (AiResponse != null)
+        {
+            AiResponse.text = ThinkingMessage;
+        }
+    }
+
+    void ReplaceThinkingLine(string speakerPrefix, string message)
+    {
+        if (thinkingLineVisible && responseField != null)
+        {
+            string pendingLine = $"AI: {ThinkingMessage}";
+            string currentText = responseField.text ?? string.Empty;
+
+            if (currentText.EndsWith(pendingLine))
+            {
+                currentText = currentText.Substring(0, currentText.Length - pendingLine.Length);
+                responseField.text = currentText.TrimEnd('\n');
+            }
+
+            thinkingLineVisible = false;
+        }
+
+        AppendConversationLine(speakerPrefix, message);
     }
 
     void AppendConversationLine(string speakerPrefix, string message)
@@ -274,25 +322,72 @@ public class AiTextReciever : MonoBehaviour
             byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonBody);
             req.uploadHandler = new UploadHandlerRaw(bodyRaw);
             req.downloadHandler = new DownloadHandlerBuffer();
+            req.timeout = RequestTimeoutSeconds;
             req.SetRequestHeader("Content-Type", "application/json");
-            req.SetRequestHeader("x-app-secret", "test_secret");
+            req.SetRequestHeader(AppSecretHeader, AppSecret);
             yield return req.SendWebRequest();
-            if (req.result == UnityWebRequest.Result.Success){
-                if (expectedContextVersion != contextVersion)
-                {
-                    yield break;
-                }
 
-                Choices response = JsonUtility.FromJson<Choices>(req.downloadHandler.text);
-                string aiMessage = response.choices[0].message.content;
-                AiResponse.text = aiMessage;
-                AppendConversationLine("AI", aiMessage);
-                PlayMessageAudio(aiMessage, expectedContextVersion);
-                
-            } 
+            if (expectedContextVersion != contextVersion)
+            {
+                yield break;
+            }
 
-            else
-                Debug.LogError(req.error);
+            if (req.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError($"AI request failed ({req.result}): {req.error}");
+                ShowGuideError(req.result == UnityWebRequest.Result.ConnectionError
+                    ? OfflineMessage
+                    : ServiceErrorMessage);
+                yield break;
+            }
+
+            string aiMessage = ExtractMessage(req.downloadHandler.text);
+            if (string.IsNullOrWhiteSpace(aiMessage))
+            {
+                // A 200 response that does not carry a usable answer still has to say something to the visitor.
+                Debug.LogError($"AI response could not be parsed: {req.downloadHandler.text}");
+                ShowGuideError(ServiceErrorMessage);
+                yield break;
+            }
+
+            ReplaceThinkingLine("AI", aiMessage);
+            AiResponse.text = aiMessage;
+            PlayMessageAudio(aiMessage, expectedContextVersion);
+        }
+    }
+
+    // The worker can return an error-shaped payload with HTTP 200, so every hop is checked before use.
+    string ExtractMessage(string rawJson)
+    {
+        if (string.IsNullOrWhiteSpace(rawJson))
+        {
+            return null;
+        }
+
+        try
+        {
+            Choices response = JsonUtility.FromJson<Choices>(rawJson);
+            if (response?.choices == null || response.choices.Length == 0)
+            {
+                return null;
+            }
+
+            return response.choices[0]?.message?.content;
+        }
+        catch (System.Exception exception)
+        {
+            Debug.LogError($"AI response parse error: {exception.Message}");
+            return null;
+        }
+    }
+
+    void ShowGuideError(string errorMessage)
+    {
+        ReplaceThinkingLine("AI", errorMessage);
+
+        if (AiResponse != null)
+        {
+            AiResponse.text = errorMessage;
         }
     }
     
@@ -312,8 +407,9 @@ public class AiTextReciever : MonoBehaviour
         using (UnityWebRequest req = new UnityWebRequest(workerUrl + "playerquestionaudio", "POST")){
             req.uploadHandler = new UploadHandlerRaw(JsonByte);
             req.downloadHandler = new DownloadHandlerBuffer();
+            req.timeout = RequestTimeoutSeconds;
             req.SetRequestHeader("Content-Type", "application/json");
-            req.SetRequestHeader("x-app-secret", "test_secret");
+            req.SetRequestHeader(AppSecretHeader, AppSecret);
             yield return req.SendWebRequest();
             if (req.result == UnityWebRequest.Result.Success){
                 if (expectedContextVersion != contextVersion)
@@ -364,7 +460,18 @@ public class AiTextReciever : MonoBehaviour
         if (plane != null && plane.FAQS != null)
         {
             for (int i = 0; i < plane.FAQS.Count; i++) {
-                if (loweredinput.Contains(plane.FAQS[i].keyword)) {
+                FAQ faq = plane.FAQS[i];
+
+                // A blank keyword makes Contains() match everything, which would hijack every question,
+                // and a blank answer would print nothing. Skip incomplete entries.
+                if (faq == null ||
+                    string.IsNullOrWhiteSpace(faq.keyword) ||
+                    string.IsNullOrWhiteSpace(faq.answer))
+                {
+                    continue;
+                }
+
+                if (loweredinput.Contains(faq.keyword.Trim().ToLower())) {
                     if (expectedContextVersion != contextVersion)
                     {
                         yield break;
@@ -376,6 +483,8 @@ public class AiTextReciever : MonoBehaviour
                 }
             }
         }
+
+        ShowThinkingLine();
 
         string contextAwarePrompt = BuildContextAwarePrompt(playertextinput);
         StartCoroutine(AskChatGPT(contextAwarePrompt, expectedContextVersion));

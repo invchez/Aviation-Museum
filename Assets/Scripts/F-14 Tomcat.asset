@@ -19,9 +19,7 @@ MonoBehaviour:
     it is famous for its long-range AIM-54 Phoenix missile capability, high speed
     (Mach 2.34+), and, later, its "Bombcat" air-to-ground precision strike role.
   Manufacturer: Grumman Aerospace Corporation
-  Date: December 21, 1970
-  WingSpan: 19.55 m
+  Date: 1970
+  WingSpan: 64 ft 1 in (19.55 m), wings spread
   TSpeed: 1,544 mph (Mach 2.34)
-  FAQS:
-  - keyword: size
-    answer: return size
+  FAQS: []
